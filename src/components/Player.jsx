@@ -2,8 +2,9 @@ import { useState } from 'react'
 
 export default function Player({ name, symbol }) {
     const [isEditing, setIsEditing] = useState(false)
+
     function handleEditClick() {
-        setIsEditing(!isEditing)
+        setIsEditing(editing => !editing)
     }
 
     let playerName = <span className='player-name'>{name}</span>
@@ -18,7 +19,6 @@ export default function Player({ name, symbol }) {
     <li className="player">
         {playerName}
         <span className="player">
-            {/* <span className="player-name">{name}</span> see playerName var*/}
             <span className="player-symbol">{symbol}</span>
         </span>
         <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
