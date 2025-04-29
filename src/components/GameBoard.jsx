@@ -6,7 +6,7 @@ const initialGameBoard = [
     [null, null, null],
 ]
 
-export default function GameBoard() {
+export default function GameBoard( {onSelectSquare, activePlayerSymbol} ) {
     const [gameBoard, setGameBoard] = useState(initialGameBoard)
 
     function handleSelectBox(rowIndex, colIndex) {
@@ -14,9 +14,11 @@ export default function GameBoard() {
              // Update the game board with the player's move
             // contains the old array elements as children elements (the previous state) and the nested arrays copied as well
             const updatedBoard = [...prevGameBoard.map(innerArray => [...innerArray])]
-            updatedBoard[rowIndex][colIndex] = 'X'
+            updatedBoard[rowIndex][colIndex] = activePlayerSymbol
             return updatedBoard
         })
+
+        onSelectSquare()
     }
     
     // this board is updated dynamically
