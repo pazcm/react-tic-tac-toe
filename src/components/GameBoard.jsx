@@ -6,7 +6,22 @@ const initialGameBoard = [
     [null, null, null],
 ]
 
-export default function GameBoard( { onSelectSquare } ) {
+export default function GameBoard( { onSelectSquare, turns } ) {
+    // transform turns array in a multidimensional array (like the game board)
+    let gameBoard = initialGameBoard;
+    // override the initial game board with the turns array (if it is not empty, has turns)
+   
+    // deriving the gameboard from that state
+   for (const turn of turns) {
+        const { square, player } = turn
+        const { row, col } = square 
+        // console.log(turn)
+        gameBoard[row][col] = player
+    }
+    // console.log(gameBoard)
+    // gameBoard is a computed value, so we don't need to store it in a state (is dereived from the gameTurns state)
+    
+
     // const [gameBoard, setGameBoard] = useState(initialGameBoard)
 
     // function handleSelectSquare(rowIndex, colIndex) {
@@ -21,6 +36,7 @@ export default function GameBoard( { onSelectSquare } ) {
     //     onSelectSquare()
     // }
     
+
     // this board is updated dynamically
     return(
         <ol id="game-board">
@@ -29,7 +45,7 @@ export default function GameBoard( { onSelectSquare } ) {
                     <ol className="">
                         {row.map((playerSymbol, colIndex) => (
                             <li key={colIndex}>
-                                <button onClick={(onSelectSquare)}>{playerSymbol}</button>
+                                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
                             </li>
                         ))}
                     </ol>
