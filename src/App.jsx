@@ -1,25 +1,54 @@
+import { useState } from "react"
+
+import GameBoard from "./components/GameBoard.jsx"
+import Player from "./components/Player.jsx"
+import Log from "./components/Log.jsx"
+
+function deriveActivePlayer(gameTurns) {
+  // Check if there are any turns
+  let currentPlayer = 'X'
+
+  if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
+    currentPlayer = 'O'
+  }
+
+  return currentPlayer
+}
 
 function App() {
+  const [gameTurns, setGameTurns] = useState([])
+  // const [activePlayer, setActivePlayer] = useState('X')
+
+  const activePlayer = deriveActivePlayer(gameTurns)
+
+  function handleSelectSquare(rowIndex, colIndex) {
+    // setActivePlayer((curActivePlayer) => curActivePlayer === 'X' ? 'O' : 'X')
+    setGameTurns((prevTurns) => {
+      const currentPlayer = deriveActivePlayer(prevTurns)
+      
+      const updatedTurns = [
+      { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
+        ...prevTurns,
+      ]
+      // Log the current player and the selected square
+      // console.log(`Player ${currentPlayer} selected square ${rowIndex},${colIndex}`)
+      // Log the updated game turns
+      return updatedTurns
+    })
+  }
+  
   return <main>
     <div id="game-container">
-      <ol id="players">
-        <li>
-          <span className="player-name">Player 1</span>
-          <span className="player-symbol">X</span>
-        </li>
-        <li>
-          <span className="player-name">Player 2</span>
-          <span className="player-symbol">O</span>
-        </li>
+      <ol id="players" className="highlight-player">
+        <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
+        <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
       </ol>
-      GAME BOARD
+      <GameBoard onSelectSquare={handleSelectSquare} 
+      turns={gameTurns}
+      />
     </div>
-
-
-    LOG
+    <Log turns={gameTurns}/>
   </main>
-   
-
 }
 
 export default App
