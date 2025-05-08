@@ -3,6 +3,8 @@ import { useState } from "react"
 import GameBoard from "./components/GameBoard.jsx"
 import Player from "./components/Player.jsx"
 import Log from "./components/Log.jsx"
+import { WINNING_COMBINATIONS } from "./winning-combinations.js"
+
 
 function deriveActivePlayer(gameTurns) {
   // Check if there are any turns
@@ -15,11 +17,38 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer
 }
 
+const initialGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+]
+
+
 function App() {
   const [gameTurns, setGameTurns] = useState([])
   // const [activePlayer, setActivePlayer] = useState('X')
 
   const activePlayer = deriveActivePlayer(gameTurns)
+
+  let gameBoard = initialGameBoard
+
+  // here deriving the gameboard from gameTurns state
+  for (const turn of gameTurns) {
+    const { square, player } = turn
+    const { row, col } = square 
+    
+    gameBoard[row][col] = player
+  }
+
+  let winner
+  // to extract the symbols and positions from the gameboard
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col]
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col]
+    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].col]
+
+  }
+
 
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer((curActivePlayer) => curActivePlayer === 'X' ? 'O' : 'X')
@@ -43,8 +72,10 @@ function App() {
         <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
         <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
       </ol>
-      <GameBoard onSelectSquare={handleSelectSquare} 
-      turns={gameTurns}
+      {winner && <div className="winner">Player {winner} wins!</div>}
+      {/* set a board prop which gets this gameboard that I'm deriving here now */}
+      <GameBoard onSelectSquare={handleSelectSquare}
+      board={gameBoard}
       />
     </div>
     <Log turns={gameTurns}/>
