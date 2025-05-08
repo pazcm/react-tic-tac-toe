@@ -41,12 +41,16 @@ function App() {
   }
 
   let winner
-  // to extract the symbols and positions from the gameboard
+  // extract the symbols and positions from the gameboard
   for (const combination of WINNING_COMBINATIONS) {
-    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col]
-    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col]
-    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].col]
-
+    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column]
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column]
+    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column]
+    
+    if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
+      winner = firstSquareSymbol
+      break
+    }
   }
 
 
@@ -72,7 +76,7 @@ function App() {
         <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
         <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
       </ol>
-      {winner && <div className="winner">Player {winner} wins!</div>}
+      {winner && <div className="winner"> {winner} wins!</div>}
       {/* set a board prop which gets this gameboard that I'm deriving here now */}
       <GameBoard onSelectSquare={handleSelectSquare}
       board={gameBoard}
