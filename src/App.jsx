@@ -5,6 +5,7 @@ import Player from "./components/Player.jsx"
 import Log from "./components/Log.jsx"
 import GameOver from "./components/GameOver.jsx"
 import { WINNING_COMBINATIONS } from "./winning-combinations.js"
+import { use } from "react"
 
 
 function deriveActivePlayer(gameTurns) {
@@ -26,6 +27,10 @@ const initialGameBoard = [
 
 
 function App() {
+  const [players, setPlayers]= useState({
+    X: 'Player 1',
+    O: 'Player 2',
+  })
   const [gameTurns, setGameTurns] = useState([])
   // const [activePlayer, setActivePlayer] = useState('X')
 
@@ -50,7 +55,7 @@ function App() {
     const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column]
     
     if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
-      winner = firstSquareSymbol
+      winner = players[firstSquareSymbol]
       break
     }
   }
@@ -77,12 +82,21 @@ function App() {
   function handleRestart() {
     setGameTurns([])
   }
+
+  function handleNameChange(symbol, newName) {
+    setPlayers((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [symbol]: newName,
+      }
+    })
+  }
   
   return <main>
     <div id="game-container">
       <ol id="players" className="highlight-player">
-        <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
-        <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
+        <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} onChangeName={handleNameChange} />
+        <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} onChangeName={handleNameChange} />
       </ol>
       {(winner || hasDraw) && (<GameOver winner={winner} onRestart={handleRestart} />)}
       {/* set a board prop which gets this gameboard that I'm deriving here now */}
