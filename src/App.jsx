@@ -31,7 +31,8 @@ function App() {
 
   const activePlayer = deriveActivePlayer(gameTurns)
 
-  let gameBoard = initialGameBoard
+  // copy inner arrays so make sure we add a brand new array and not the original gameboard (initial array in memory)
+  let gameBoard = [...initialGameBoard.map(array => [...array])]
 
   // here deriving the gameboard from gameTurns state
   for (const turn of gameTurns) {
