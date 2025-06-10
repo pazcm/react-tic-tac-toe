@@ -1,4 +1,5 @@
-// again we need to lift the state up to the parent component
+// Manage some dynamic array of turns here (an array which grows with every button click) (which order the player clicked the button in)
+// **! (I can't manage the state here)-> again we need to lift the state up to the parent component 
 // because the information about which button was clicked is generated in the GameBoard component
 // and the App component is where we have access to both the GameBoard and Log components.
 
